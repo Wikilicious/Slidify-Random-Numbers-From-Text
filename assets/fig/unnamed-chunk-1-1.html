@@ -1,0 +1,150 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    <link rel='stylesheet' href='//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css'>
+    
+    <script src='//code.jquery.com/jquery-1.10.2.min.js' type='text/javascript'></script>
+    <script src='//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js' type='text/javascript'></script>
+    
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body >
+    
+    <table id = 'chart10fc3e6110f1' class = 'rChart datatables'></table>    
+    <script type="text/javascript" charset="utf-8">
+  var chartParamschart10fc3e6110f1 = {
+ "dom": "chart10fc3e6110f1",
+"width":    800,
+"height":    400,
+"table": {
+ "aaData": [
+ [
+      0,
+"a",
+     0,
+0 
+],
+[
+      1,
+"a",
+     0,
+1 
+],
+[
+      2,
+"a",
+     0,
+2 
+],
+[
+      0,
+"h",
+     7,
+3 
+],
+[
+      8,
+"e",
+     4,
+4 
+],
+[
+      6,
+"l",
+     1,
+5 
+],
+[
+      7,
+"l",
+     1,
+6 
+],
+[
+      1,
+"o",
+     4,
+7 
+],
+[
+      0,
+"w",
+     2,
+8 
+],
+[
+      3,
+"o",
+     4,
+9 
+],
+[
+      7,
+"r",
+     7,
+10 
+],
+[
+      2,
+"l",
+     1,
+11 
+],
+[
+      5,
+"d",
+     3,
+12 
+] 
+],
+"aoColumns": [
+ {
+ "sTitle": "Num" 
+},
+{
+ "sTitle": "letter" 
+},
+{
+ "sTitle": "Map" 
+},
+{
+ "sTitle": "counter" 
+} 
+] 
+},
+"id": "chart10fc3e6110f1" 
+}
+  $('#' + chartParamschart10fc3e6110f1.id).removeClass("rChart")
+
+  $(document).ready(function() {
+		drawDataTable(chartParamschart10fc3e6110f1)
+	});
+  function drawDataTable(chartParams){
+    var dTable = $('#' + chartParams.dom).dataTable(
+      chartParams.table
+    );
+    //first use rCharts width
+  	$('#'+chartParams.id+"_wrapper").css("width",chartParams.width)  
+		$('#'+chartParams.id+"_wrapper").css("width",chartParams.table.width)
+    
+    //then if specified change to table width
+    $('#'+chartParams.id+"_wrapper").css("margin-left", "auto");
+    $('#'+chartParams.id+"_wrapper").css("margin-right", "auto");
+		dTable.fnAdjustColumnSizing();
+  }
+		
+</script>
+    
+    <script></script>    
+  </body>
+</html>

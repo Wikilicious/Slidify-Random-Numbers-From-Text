@@ -1,0 +1,95 @@
+---
+title       : Generate Pseudo-Random Numbers From Text
+subtitle    : 
+author      : Thomaz L Santana
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+ext_widgets: {rCharts: [libraries/nvd3]}
+---
+
+## Why?
+### Random numbers have many uses.
+
+1. Making games unpredictable
+2. Unbiased sampling
+3. Simulation e.g. Monte Carlo
+4. Cryptography
+
+---
+
+## Generating Pseudo-Random Numbers
+### MidSquare Method
+$X_0 = 4567$    (The seed I chose)
+
+$X_0^2 = 20\color{blue}{8574}89$  (The seed squared)
+
+$X_1 = 8574$ (The first pseudo-random number)
+
+$X_1^2 = 73\color{blue}{5134}76$
+
+$X_2 = 5134$ (The second pseudo-random number)
+
+$X_2^2 = 26\color{blue}{3579}56$
+
+$X_3 = 3579$ (The third pseudo-random number)
+
+---
+## My Method of Generating Pseudo-Random Numbers
+
+```{r, results='asis', echo=FALSE, out.extra=''}
+library(knitr)
+cat(
+  '<table><td>
+  <table>
+  Create a dictionary mapping letters to numbers and a counter that increments by one after each letter. The final algorithm is: $Num = (Map[letter] + counter) % 10$<br><br>
+  Map = {a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, j=9, k=0, l=1, m=2, n=3, o=4, p=5, q=6, r=7, s=8, t=9, u=0, v=1, w=2, x=3, y=4, z=5} 
+  <br> example: Map[n]=3, Map[a]=0
+  <br><br> This string "aaahelloworld" will produce the following random numbers:<br 0, 1, 2, 0, 8, 6, 7, 1, 0, 3, 7, 2, 5
+  <br> Follow the step-by-step example on the right.
+  <br><br> The map is the "seed" and the algorithm will produce the same sequence of numbers for the same text every time.
+  </table></td>
+  <td><table>
+  <tr><th>Num</th><th>letter</th><th>Map</th><th>counter</th></tr>
+<tr><td>0</td><td>a</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>a</td><td>0</td><td>1</td></tr>
+<tr><td>2</td><td>a</td><td>0</td><td>2</td></tr>
+<tr><td>0</td><td>h</td><td>7</td><td>3</td></tr>
+<tr><td>8</td><td>e</td><td>4</td><td>4</td></tr>
+<tr><td>6</td><td>l</td><td>1</td><td>5</td></tr>
+<tr><td>7</td><td>l</td><td>1</td><td>6</td></tr>
+<tr><td>1</td><td>o</td><td>4</td><td>7</td></tr>
+<tr><td>0</td><td>w</td><td>2</td><td>8</td></tr>
+<tr><td>3</td><td>o</td><td>4</td><td>9</td></tr>
+<tr><td>7</td><td>r</td><td>7</td><td>10</td></tr>
+<tr><td>2</td><td>l</td><td>1</td><td>11</td></tr>
+<tr><td>5</td><td>d</td><td>3</td><td>12</td></tr>
+</table></td></table>'
+  )
+```
+
+--- &twocol
+## Histogram
+
+*** =left
+### R's Random Numbers
+```{r, echo=F, results = 'asis'}
+nums <- sample(0:9, 1479, replace=T)
+hist(nums, xlab='Number', ylab='Frequency', col='lightblue',main='Frequency Histogram', breaks=0:10, 
+     right=F, sub='Distribution of Digits (Red line is the expected value)')
+abline(a=length(nums)/10, b=0, col='red')
+```
+
+*** =right
+### My Random Numbers
+```{r, echo=F, results = 'asis'}
+let2nums = c(6, 2, 6, 3, 3, 8, 5, 4, 2, 2, 8, 5, 2, 0, 2, 9, 2, 0, 1, 9, 9, 1, 5, 8, 1, 9, 9, 7, 0, 8, 3, 9, 0, 6, 3, 2, 0, 0, 3, 6, 4, 4, 2, 5, 3, 3, 0, 0, 1, 3, 0, 0, 7, 3, 3, 8, 1, 4, 2, 1, 3, 1, 5, 1, 3, 5, 5, 5, 6, 8, 8, 3, 2, 4, 7, 5, 9, 7, 9, 3, 8, 9, 0, 4, 7, 4, 6, 6, 8, 2, 5, 8, 6, 6, 4, 7, 5, 5, 1, 9, 0, 0, 6, 5, 4, 4, 0, 0, 0, 3, 2, 6, 3, 7, 7, 8, 6, 0, 8, 0, 4, 9, 0, 1, 7, 4, 6, 5, 8, 7, 3, 5, 9, 6, 4, 3, 0, 0, 7, 3, 2, 8, 5, 7, 5, 9, 2, 1, 1, 8, 4, 4, 6, 6, 9, 5, 9, 0, 1, 8, 7, 5, 5, 3, 3, 3, 7, 5, 7, 3, 3, 5, 7, 6, 4, 8, 9, 7, 7, 9, 3, 9, 5, 8, 8, 2, 8, 1, 1, 2, 2, 5, 5, 7, 5, 7, 9, 7, 9, 5, 4, 8, 0, 2, 1, 7, 9, 1, 5, 2, 8, 4, 7, 7, 1, 9, 9, 9, 2, 0, 3, 6, 9, 1, 2, 8, 8, 1, 8, 6, 8, 5, 5, 5, 8, 6, 0, 4, 6, 2, 9, 8, 6, 6, 5, 5, 4, 5, 0, 7, 3, 5, 7, 6, 6, 2, 0, 7, 7, 7, 3, 7, 5, 6, 4, 4, 6, 0, 3, 6, 4, 4, 2, 5, 3, 3, 9, 7, 6, 7, 3, 7, 5, 7, 1, 3, 9, 1, 0, 2, 3, 4, 7, 3, 6, 5, 6, 3, 2, 7, 2, 4, 2, 6, 7, 8, 4, 0, 7, 3, 7, 1, 4, 2, 2, 6, 0, 0, 4, 6, 0, 6, 9, 1, 6, 3, 7, 0, 3, 6, 4, 4, 4, 7, 4, 2, 4, 1, 1, 1, 8, 2, 3, 6, 9, 9, 8, 7, 6, 2, 4, 4, 5, 2, 1, 9, 9, 5, 7, 9, 9, 9, 0, 2, 2, 7, 6, 8, 1, 4, 0, 4, 5, 3, 6, 9, 9, 6, 8, 0, 8, 4, 6, 8, 7, 7, 3, 1, 8, 8, 8, 4, 8, 6, 4, 8, 9, 7, 7, 9, 3, 6, 9, 7, 7, 5, 8, 6, 1, 8, 7, 1, 1, 6, 6, 5, 9, 0, 9, 3, 3, 1, 0, 7, 7, 8, 5, 1, 1, 8, 4, 2, 3, 6, 4, 8, 4, 6, 2, 6, 4, 4, 2, 4, 8, 5, 5, 0, 1, 9, 9, 1, 5, 2, 8, 8, 6, 0, 0, 9, 8, 9, 5, 3, 4, 8, 4, 1, 1, 1, 4, 2, 0, 7, 4, 2, 4, 1, 1, 3, 4, 2, 3, 3, 5, 5, 4, 1, 7, 9, 3, 5, 5, 2, 2, 8, 8, 5, 9, 0, 3, 2, 6, 3, 1, 8, 9, 4, 2, 1, 3, 3, 6, 5, 6, 5, 9, 5, 0, 9, 9, 5, 5, 3, 2, 3, 9, 3, 1, 7, 9, 1, 1, 1, 2, 4, 4, 9, 6, 2, 0, 4, 5, 6, 2, 4, 6, 6, 6, 7, 9, 9, 4, 3, 5, 8, 1, 4, 2, 2, 0, 3, 1, 1, 5, 8, 6, 9, 3, 6, 0, 9, 0, 1, 7, 7, 4, 8, 9, 2, 1, 5, 5, 8, 4, 3, 9, 0, 7, 3, 3, 3, 6, 5, 6, 5, 9, 5, 0, 9, 9, 9, 5, 9, 7, 5, 9, 9, 2, 6, 9, 1, 0, 6, 3, 9, 9, 5, 1, 2, 8, 0, 2, 2, 2, 3, 5, 5, 0, 9, 1, 4, 9, 7, 2, 5, 7, 6, 6, 0, 3, 5, 1, 3, 7, 9, 9, 6, 6, 2, 2, 9, 3, 4, 7, 6, 0, 7, 5, 2, 3, 8, 6, 5, 7, 4, 0, 0, 0, 6, 4, 1, 1, 7, 7, 3, 4, 9, 3, 0, 4, 4, 6, 0, 2, 8, 0, 0, 0, 3, 1, 4, 2, 8, 9, 6, 4, 9, 8, 8, 8, 5, 5, 1, 7, 5, 9, 0, 1, 2, 3, 6, 2, 5, 4, 5, 2, 1, 6, 2, 5, 5, 9, 6, 3, 2, 0, 5, 5, 2, 3, 1, 1, 3, 7, 0, 3, 1, 1, 9, 2, 0, 0, 4, 7, 9, 8, 1, 0, 1, 4, 4, 5, 7, 7, 8, 3, 7, 0, 9, 6, 8, 6, 3, 7, 8, 1, 4, 2, 2, 9, 1, 1, 3, 7, 9, 8, 5, 2, 2, 9, 9, 0, 2, 2, 8, 1, 1, 2, 0, 1, 5, 5, 5, 7, 8, 0, 2, 5, 3, 3, 1, 4, 1, 5, 6, 0, 0, 1, 3, 8, 5, 2, 0, 6, 2, 9, 7, 1, 2, 3, 4, 5, 4, 1, 9, 2, 4, 8, 1, 2, 9, 5, 9, 2, 9, 6, 4, 6, 3, 3, 2, 6, 0, 6, 5, 5, 5, 2, 3, 0, 2, 6, 6, 5, 3, 9, 1, 2, 2, 1, 5, 4, 2, 4, 2, 0, 5, 0, 2, 6, 1, 0, 8, 9, 9, 4, 0, 8, 2, 3, 4, 7, 7, 8, 2, 1, 3, 5, 9, 3, 5, 5, 6, 9, 2, 0, 6, 2, 1, 9, 9, 3, 4, 0, 7, 4, 5, 9, 0, 3, 5, 5, 9, 8, 4, 9, 7, 1, 3, 9, 1, 1, 7, 6, 9, 9, 6, 1, 3, 5, 4, 8, 5, 6, 9, 8, 2, 9, 7, 8, 8, 4, 7, 7, 4, 9, 7, 3, 8, 4, 8, 5, 5, 8, 7, 1, 8, 2, 8, 8, 4, 8, 6, 3, 2, 4, 5, 1, 1, 1, 1, 0, 1, 4, 5, 0, 5, 9, 2, 4, 0, 2, 6, 8, 8, 5, 5, 1, 1, 7, 5, 5, 1, 4, 7, 8, 1, 6, 7, 5, 1, 3, 4, 8, 8, 8, 1, 0, 4, 1, 5, 1, 7, 7, 4, 3, 1, 1, 1, 1, 1, 0, 1, 7, 7, 4, 8, 9, 2, 7, 5, 4, 7, 2, 6, 0, 0, 8, 2, 4, 0, 2, 2, 8, 7, 0, 0, 7, 2, 4, 6, 5, 9, 6, 7, 0, 9, 3, 0, 8, 9, 9, 5, 8, 8, 5, 0, 6, 7, 6, 4, 6, 6, 7, 6, 0, 0, 7, 6, 4, 4, 0, 6, 2, 4, 3, 7, 0, 8, 4, 8, 3, 1, 1, 5, 5, 0, 5, 3, 8, 5, 2, 0, 6, 9, 4, 0, 0, 7, 1, 2, 5, 7, 7, 8, 0, 1, 1, 2, 5, 5, 9, 6, 3, 2, 4, 5, 1, 1, 1, 1, 0, 1, 4, 1, 9, 9, 2, 1, 5, 1, 1, 7, 1, 8, 4, 5, 1, 2, 4, 5, 5, 7, 7, 8, 0, 0, 1, 1, 7, 9, 4, 0, 7, 4, 3, 1, 1, 2, 3, 9, 6, 8, 3, 7, 6, 4, 2, 2, 4, 4, 3, 1, 1, 9, 9, 9, 2, 2, 9, 4, 4, 3, 7, 8, 7, 1, 1, 7, 3, 9, 1, 3, 5, 6, 0, 0, 1, 6, 4, 3, 6, 6, 3, 8, 4, 7, 0, 1, 3, 9, 0, 6, 7, 9, 8, 5, 0, 2, 4, 8, 5, 0, 2, 8, 6, 0, 1, 1, 4, 3, 7, 3, 3, 9, 3, 5, 1, 9, 7, 5, 5, 1, 4, 0, 1, 5, 0, 7, 4, 4, 1, 4, 7, 9, 8, 0, 1, 3, 4, 9, 5, 2, 1, 3, 4, 0, 0, 3, 0, 8, 0, 7, 7, 0, 4, 6, 1, 7, 3, 0, 6, 6, 3, 2, 0, 0, 7, 9, 9, 1, 5, 7, 6, 3, 0, 0, 0, 3, 3, 5, 7, 7, 6, 3, 6, 8, 6, 4, 0, 0, 0, 7, 7, 5, 1, 4, 6, 7, 3, 9, 0, 6, 3, 2, 0, 0, 1, 7, 3, 0, 9, 6, 6, 9, 6, 4, 6, 3, 3, 9, 5, 6, 3, 2, 0, 0, 6, 3, 6, 1, 6, 6, 6, 9, 7, 0, 4, 0, 9, 8, 6, 3, 0, 2, 9, 5, 7, 2, 8, 9, 5, 2, 7, 5, 9, 4, 2, 5, 0, 9, 9, 7, 6, 9, 9, 6, 0, 2, 2, 5, 5, 0, 8, 7, 0, 9, 0, 3, 3, 4, 5, 2, 1, 5, 5, 0, 2, 3, 0, 4, 7, 1, 1, 3, 5, 0, 7, 9, 0, 5, 5, 8, 1, 9, 9, 6, 8, 8, 0, 4, 6, 5, 2, 9, 9, 6, 6, 7, 9, 9, 5, 8, 8, 9, 7, 8, 2, 2, 3, 1, 5, 6, 7, 8, 9, 8, 5, 3, 6, 8, 2, 5, 6, 3, 9, 3, 9)
+hist(let2nums, xlab='Number', ylab='Frequency', col='lightblue',main='Frequency Histogram', breaks=0:10, 
+     right=F, sub='Distribution of Digits (Red line is the expected value)')
+abline(a=length(nums)/10, b=0, col='red')
+
+```

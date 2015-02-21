@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Pseudo-Random Numbers From Text</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Generate Pseudo-Random Numbers From Text">
+  <meta name="author" content="Thomaz L Santana">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/nvd3/css/nv.d3.css"></link>
+<link rel=stylesheet href="libraries/widgets/nvd3/css/rNVD3.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  <script src="libraries/widgets/nvd3/js/jquery-1.8.2.min.js"></script>
+<script src="libraries/widgets/nvd3/js/d3.v3.min.js"></script>
+<script src="libraries/widgets/nvd3/js/nv.d3.min-new.js"></script>
+<script src="libraries/widgets/nvd3/js/fisheye.js"></script>
+
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Generate Pseudo-Random Numbers From Text</h1>
+    <h2></h2>
+    <p>Thomaz L Santana<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Why?</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Random numbers have many uses.</h3>
+
+<ol>
+<li>Making games unpredictable</li>
+<li>Unbiased sampling</li>
+<li>Simulation e.g. Monte Carlo</li>
+<li>Cryptography</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Generating Pseudo-Random Numbers</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>MidSquare Method</h3>
+
+<p>\(X_0 = 4567\)    (The seed I chose)</p>
+
+<p>\(X_0^2 = 20\color{blue}{8574}89\)  (The seed squared)</p>
+
+<p>\(X_1 = 8574\) (The first pseudo-random number)</p>
+
+<p>\(X_1^2 = 73\color{blue}{5134}76\)</p>
+
+<p>\(X_2 = 5134\) (The second pseudo-random number)</p>
+
+<p>\(X_2^2 = 26\color{blue}{3579}56\)</p>
+
+<p>\(X_3 = 3579\) (The third pseudo-random number)</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>My Method of Generating Pseudo-Random Numbers</h2>
+  </hgroup>
+  <article data-timings="">
+    <table><td>
+  <table>
+  Create a dictionary mapping letters to numbers and a counter that increments by one after each letter. The final algorithm is: $Num = (Map[letter] + counter) % 10$<br><br>
+  Map = {a=0, b=1, c=2, d=3, e=4, f=5, g=6, h=7, i=8, j=9, k=0, l=1, m=2, n=3, o=4, p=5, q=6, r=7, s=8, t=9, u=0, v=1, w=2, x=3, y=4, z=5} 
+  <br> example: Map[n]=3, Map[a]=0
+  <br><br> This string "aaahelloworld" will produce the following random numbers:<br 0, 1, 2, 0, 8, 6, 7, 1, 0, 3, 7, 2, 5
+  <br> Follow the step-by-step example on the right.
+  <br><br> The map is the "seed" and the algorithm will produce the same sequence of numbers for the same text every time.
+  </table></td>
+  <td><table>
+  <tr><th>Num</th><th>letter</th><th>Map</th><th>counter</th></tr>
+<tr><td>0</td><td>a</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>a</td><td>0</td><td>1</td></tr>
+<tr><td>2</td><td>a</td><td>0</td><td>2</td></tr>
+<tr><td>0</td><td>h</td><td>7</td><td>3</td></tr>
+<tr><td>8</td><td>e</td><td>4</td><td>4</td></tr>
+<tr><td>6</td><td>l</td><td>1</td><td>5</td></tr>
+<tr><td>7</td><td>l</td><td>1</td><td>6</td></tr>
+<tr><td>1</td><td>o</td><td>4</td><td>7</td></tr>
+<tr><td>0</td><td>w</td><td>2</td><td>8</td></tr>
+<tr><td>3</td><td>o</td><td>4</td><td>9</td></tr>
+<tr><td>7</td><td>r</td><td>7</td><td>10</td></tr>
+<tr><td>2</td><td>l</td><td>1</td><td>11</td></tr>
+<tr><td>5</td><td>d</td><td>3</td><td>12</td></tr>
+</table></td></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Histogram</h2>
+  </hgroup>
+  <article data-timings="">
+    
+<div style='float:left;width:48%;' class='centered'>
+  <h3>R&#39;s Random Numbers</h3>
+
+<p><img src="assets/fig/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"> </p>
+
+</div>
+<div style='float:right;width:48%;'>
+  <h3>My Random Numbers</h3>
+
+<p><img src="assets/fig/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"> </p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Why?'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Generating Pseudo-Random Numbers'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='My Method of Generating Pseudo-Random Numbers'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Histogram'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
